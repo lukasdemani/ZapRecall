@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Card(){
+export default function Card(props){
     const questions = [
         {id: 1, question: "O que é JSX?", answer: 'Uma extensão de linguagem do JavaScript'},
         {id: 2, question: 'O React é __ ', answer: 'Uma biblioteca JavaScript para construção de interfaces'},
@@ -19,23 +19,33 @@ export default function Card(){
 
     const flipCard = () => {setText(false);}
 
-    function nextQuestion(id){
+    function nextQuestion(){
         setIndex(index+1);
         setText(true);
         setButtons(true);
         setColorBorder("");
+        if (index>6) {
+            props.lastId(false);
+        }
+      
     }
 
     function answeredQuestion(color, buttonsInfo){
         setColorBorder(" "+color);
         setButtons(buttonsInfo);
+        if (color == 'mood red') {
+            props.result(false);
+        }
     }
 
     let colorClass = "card" + colorBorder;
 
     return (
         <div class={colorClass}>
-            {text ? <Question question={questions[index].question} text={flipCard}/> : <Answer answer={questions[index].answer} answeredQuestion={answeredQuestion} buttons={buttons} nextQuestion={nextQuestion}/>}
+            {text ? 
+                <Question question={questions[index].question} text={flipCard}/> 
+            : 
+                <Answer answer={questions[index].answer} answeredQuestion={answeredQuestion} buttons={buttons} nextQuestion={nextQuestion}/>}
         </div>
     );
 }
@@ -69,7 +79,7 @@ function ShowAnswerButton(props){
 
     return (
         <div class="icone-button-answer">
-            <ion-icon name="arrow-undo" onClick={()=>props.text(1)}></ion-icon>
+            <ion-icon name="arrow-undo" onClick={()=>props.text()}></ion-icon>
         </div>
     );
 }

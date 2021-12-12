@@ -1,12 +1,13 @@
+import React from 'react';
+
 export default function Home(props) {
-    function setScreen(screenInfo){
-        screenInfo=false;
-    }
+    const [goal, setGoal] = React.useState("");
 
     return (
         <div class="home-page">
             <img src="/assets/logo.png" alt=""></img>
-            <div><button class="start-button" onClick={props.screenInfo}>Praticar React</button></div>
+            <input placeholder="Sua meta de zaps" value={goal} onChange={e => setGoal(e.target.value)} />
+            <div><button class="start-button" onClick={()=>props.screenInfo(goal)}>Praticar React<ion-icon name="play-forward"></ion-icon></button></div>
         </div>
     );
 }

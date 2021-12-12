@@ -2,20 +2,21 @@ import React from 'react';
 
 export default function Card(props){
     const questions = [
-        {id: 1, question: "O que é JSX?", answer: 'Uma extensão de linguagem do JavaScript'},
-        {id: 2, question: 'O React é __ ', answer: 'Uma biblioteca JavaScript para construção de interfaces'},
-        {id: 3, question: 'Componentes devem iniciar com __ ', answer: 'letra maiúscula'},
-        {id: 4, question: 'Podemos colocar __ dentro do JSX', answer: 'expressões'},
-        {id: 5, question: 'O ReactDOM nos ajuda __ ', answer: 'interagindo com a DOM para colocar componentes React na mesma'},
-        {id: 6, question: 'Usamos o npm para __ ', answer: 'gerenciar os pacotes necessários e suas dependências'},
-        {id: 7, question: 'Usamos props para __', answer: 'passar diferentes informações para componentes'},
-        {id: 8, question: 'Usamos estado (state) para __ ', answer: 'dizer para o React quais informações quando atualizadas devem renderizar a tela novamente'}
+        {question: "O que é JSX?", answer: 'Uma extensão de linguagem do JavaScript'},
+        {question: 'O React é __ ', answer: 'Uma biblioteca JavaScript para construção de interfaces'},
+        {question: 'Componentes devem iniciar com __ ', answer: 'letra maiúscula'},
+        {question: 'Podemos colocar __ dentro do JSX', answer: 'expressões'},
+        {question: 'O ReactDOM nos ajuda __ ', answer: 'interagindo com a DOM para colocar componentes React na mesma'},
+        {question: 'Usamos o npm para __ ', answer: 'gerenciar os pacotes necessários e suas dependências'},
+        {question: 'Usamos props para __', answer: 'passar diferentes informações para componentes'},
+        {question: 'Usamos estado (state) para __ ', answer: 'dizer para o React quais informações quando atualizadas devem renderizar a tela novamente'}
     ];
 
     const [text, setText] = React.useState(true);
     const [colorBorder, setColorBorder] = React.useState("");
     const [buttons, setButtons] = React.useState(true);
     const [index, setIndex] = React.useState(0);
+    const [zaps, setZaps] = React.useState(0);
 
     const flipCard = () => {setText(false);}
 
@@ -26,6 +27,9 @@ export default function Card(props){
         setColorBorder("");
         if (index>6) {
             props.lastId(false);
+            if (zaps<props.goal){
+                props.result(false);
+            }
         }
       
     }
@@ -33,29 +37,45 @@ export default function Card(props){
     function answeredQuestion(color, buttonsInfo){
         setColorBorder(" "+color);
         setButtons(buttonsInfo);
-        if (color == 'mood red') {
+        if (color === 'mood yellow'){
+            setZaps(zaps+1);
+        }
+        if (color === 'mood red') {
             props.result(false);
         }
+        
     }
 
     let colorClass = "card" + colorBorder;
 
     return (
-        <div class={colorClass}>
-            {text ? 
-                <Question question={questions[index].question} text={flipCard}/> 
-            : 
-                <Answer answer={questions[index].answer} answeredQuestion={answeredQuestion} buttons={buttons} nextQuestion={nextQuestion}/>}
+       <>
+        <div class="mini-logo"><img src='/assets/logo-mini.png'></img></div>
+        <div class='card-page'>
+            <div class={colorClass}>
+                {text ? 
+                    <Question question={questions[index].question} id={index} text={flipCard}/> 
+                : 
+                    <Answer answer={questions[index].answer} id={index} answeredQuestion={answeredQuestion} buttons={buttons} nextQuestion={nextQuestion}/>}
+            </div>
         </div>
+        </>
     );
+}
+
+function Id(props){
+    const index =props.id+1;
+    return(
+        <div class="question-id">
+            {index}/8
+        </div>
+    )
 }
 
 function Question(props){
     return (
         <div class="question-card">
-            <div class="question-id">
-                {props.id}
-            </div>
+            <Id id={props.id}/>
             <p>{props.question}</p>
             <ShowAnswerButton text={props.text}/>
         </div>
@@ -65,9 +85,7 @@ function Question(props){
 function Answer(props){
     return (
         <div class="answer-card">
-            <div class="question-id">
-                {props.id}
-            </div>
+            <Id id={props.id}/>
             <p>{props.answer}</p>
             {props.buttons ? <AnswerMoodButton changeColor={props.answeredQuestion} /> : <ShowAnswerButton text={props.nextQuestion}/>}
         </div>

@@ -52,7 +52,7 @@ export default function Card(props){
        <>
         <div class="mini-logo"><img src='/assets/logo-mini.png'></img></div>
         <div class='card-page'>
-            <div class={colorClass}>
+            <div class={colorClass} data-identifier="flashcard">
                 {text ? 
                     <Question question={questions[index].question} id={index} text={flipCard}/> 
                 : 
@@ -66,7 +66,7 @@ export default function Card(props){
 function Id(props){
     const index =props.id+1;
     return(
-        <div class="question-id">
+        <div class="question-id" data-identifier="counter">
             {index}/8
         </div>
     )
@@ -96,7 +96,7 @@ function Answer(props){
 function ShowAnswerButton(props){
 
     return (
-        <div class="icone-button-answer">
+        <div class="icone-button-answer" data-identifier="arrow">
             <ion-icon name="arrow-undo" onClick={()=>props.text()}></ion-icon>
         </div>
     );

@@ -7,7 +7,7 @@ export default function Home(props) {
         <div class="home-page">
             <img src="/assets/logo.png" alt=""></img>
             <input placeholder="Sua meta de zaps" value={goal} onChange={e => setGoal(e.target.value)} />
-            <div><button class="start-button" onClick={()=>props.screenInfo(goal)}>Praticar React<ion-icon name="play-forward"></ion-icon></button></div>
+            <div><button class="start-button" onClick={()=>props.screenInfo(goal)} data-identifier="start-zap-recall">Praticar React<ion-icon name="play-forward"></ion-icon></button></div>
         </div>
     );
 }

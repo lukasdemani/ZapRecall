@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function Card(){
     const questions = [
@@ -13,12 +13,29 @@ export default function Card(){
     ];
 
     const [text, setText] = React.useState(true);
+    const [colorBorder, setColorBorder] = React.useState("");
+    const [buttons, setButtons] = React.useState(true);
+    const [index, setIndex] = React.useState(0);
 
     const flipCard = () => {setText(false);}
 
+    function nextQuestion(id){
+        setIndex(index+1);
+        setText(true);
+        setButtons(true);
+        setColorBorder("");
+    }
+
+    function answeredQuestion(color, buttonsInfo){
+        setColorBorder(" "+color);
+        setButtons(buttonsInfo);
+    }
+
+    let colorClass = "card" + colorBorder;
+
     return (
-        <div class="card">
-            {text ? <Question question={questions[0].question} text={flipCard}/> : <Answer answer={questions[0].answer}/>}
+        <div class={colorClass}>
+            {text ? <Question question={questions[index].question} text={flipCard}/> : <Answer answer={questions[index].answer} answeredQuestion={answeredQuestion} buttons={buttons} nextQuestion={nextQuestion}/>}
         </div>
     );
 }
@@ -36,34 +53,23 @@ function Question(props){
 }
 
 function Answer(props){
-    const [colorBorder, setColorBorder] = React.useState("");
-    const [buttons, setButtons] = React.useState(true);
-
-    const rederizeButtons = () => {setButtons(false);}
-
-    function  answeredQuestion(color){
-        setColorBorder(" "+color);
-        setButtons(false);
-    }
-
-    let colorClass = "answer-card" + colorBorder;
-
     return (
-        <div class={colorClass}>
+        <div class="answer-card">
             <div class="question-id">
                 {props.id}
             </div>
             <p>{props.answer}</p>
-            {buttons ? <AnswerMoodButton changeColor={answeredQuestion}/> : <ShowAnswerButton text={rederizeButtons}/>}
+            {props.buttons ? <AnswerMoodButton changeColor={props.answeredQuestion} /> : <ShowAnswerButton text={props.nextQuestion}/>}
         </div>
     );
 }
 
 
 function ShowAnswerButton(props){
+
     return (
         <div class="icone-button-answer">
-            <ion-icon name="arrow-undo" onClick={props.text}></ion-icon>
+            <ion-icon name="arrow-undo" onClick={()=>props.text(1)}></ion-icon>
         </div>
     );
 }
@@ -78,10 +84,15 @@ function AnswerMoodButton(props){
 
     const [colorBorder, setColorBoder] = React.useState("");
 
+    function setButtons(color, buttonsInfo){
+        props.changeColor(color);
+        buttonsInfo=false;
+    }
+
     return (
         <div class="answer-moods">
                 {answerMoods.map(option => 
-                    <button class={option.color} onClick={() => props.changeColor(option.color)}>{option.mood}</button>)}
+                    <button class={option.color} onClick={()=>setButtons(option.color)}>{option.mood}</button>)}
          </div>
     );
 }

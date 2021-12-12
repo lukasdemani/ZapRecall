@@ -1,11 +1,13 @@
 import Home from './Home.js';
 import Card from './Card.js';
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function App(){
-    const [screen, setScreen] = React.useState("home");
+    const [screen, setScreen] = React.useState(true);
+
+    const changeScreen = ()=>setScreen(false);
 
     return (
-        <Card />
+        screen ? <Home screenInfo={changeScreen}/> : <Card/>
     );
 }

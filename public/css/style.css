@@ -1,3 +1,8 @@
+* {
+    font-family: 'Nunito', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+
 .home-page{
     text-align: center;
     display: flex;
@@ -146,6 +151,10 @@
     font-size: 30px;
     margin-left: 5px;
     vertical-align: -8px;
+}
+
+.answer-card h1 {
+    margin-top: 5px;
 }
 
 .black {

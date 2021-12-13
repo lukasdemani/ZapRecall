@@ -56,7 +56,7 @@ export default function Card(props){
                 {text ? 
                     <Question question={questions[index].question} id={index} text={flipCard}/> 
                 : 
-                    <Answer answer={questions[index].answer} id={index} answeredQuestion={answeredQuestion} buttons={buttons} nextQuestion={nextQuestion}/>}
+                    <Answer question={questions[index].question} answer={questions[index].answer} id={index} answeredQuestion={answeredQuestion} buttons={buttons} nextQuestion={nextQuestion}/>}
             </div>
         </div>
         </>
@@ -85,6 +85,7 @@ function Question(props){
 function Answer(props){
     return (
         <div class="answer-card">
+            <h1>{props.question}</h1>
             <Id id={props.id}/>
             <p>{props.answer}</p>
             {props.buttons ? <AnswerMoodButton changeColor={props.answeredQuestion} /> : <ShowAnswerButton text={props.nextQuestion}/>}
